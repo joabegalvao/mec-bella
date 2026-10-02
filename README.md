@@ -25,7 +25,9 @@ estão prontas em `assets/img`.
 ```
 materiais-de-origem/
   logo/          mec bella logo.jpg (150 x 150 px, preto sobre branco)
-  fotos/         sete capturas do Instagram e uma panorâmica do interior (1626 x 873)
+  fotos/         sete capturas do Instagram, uma panorâmica do interior (1626 x 873) e duas
+                 versões editadas pelo cliente em resolução maior: loja-editada.png (1715 x 917)
+                 e arara-editada.png (1214 x 1295, sem o texto do post)
   avaliacoes/    fotos de perfil de quem avaliou (72 x 72 px)
 ```
 
@@ -141,8 +143,8 @@ materiais-de-origem/             arquivos do cliente (só na pasta local, fora d
 | --- | --- | --- | --- |
 | `Screenshot ... 104819.png` | Mulher fotografa o look no espelho: regata off-white e saia plissada marinho | 663 x 889 | hero e imagem de compartilhamento |
 | `Screenshot ... 104854.png` | Manequins com alfaiataria cinza e vestido de brilho | 659 x 888 | "Os estilos", Easy Chic |
-| `Screenshot ... 131604.png` | Arara com linho, jeans e camisa azul (texto do post por cima, embaixo) | recorte 835 x 557, só a parte sem texto | "Os estilos", Basic & Casual |
-| `Screenshot ... 122400.png` | Panorâmica do interior | 1620 x 867, reduzida a 1600 | "A loja", toda a largura |
+| `arara-editada.png` | Arara com linho, jeans, camisa azul, bolsa de palha e, embaixo, tops e saia (versão editada pelo cliente, sem texto; substitui a captura `131604`) | 1214 x 1295 | "Os estilos", Basic & Casual |
+| `loja-editada.png` | Panorâmica do interior (versão editada pelo cliente; substitui a captura `122400`) | 1715 x 917, reduzida a 1600 | "A loja", toda a largura |
 | `Screenshot ... 110055.png` | Mesa de café: bolo, salgados, suco, copos com a marca | 661 x 886 | "A loja" |
 | `Screenshot ... 110108.png` | Copo de café com o logo e saquinho de biscoito | 662 x 884 | "A loja" |
 | `Screenshot ... 104843.png` | Bolsas pretas e cinto sobre a mesa | 662 x 889 | "Acessórios" |
@@ -297,6 +299,7 @@ verificado se o número responde no WhatsApp.
 | --- | --- |
 | Versão inicial da página | todos |
 | Fotos de "Os estilos" limitadas a 460 px, dentro do container, para não ampliar | `styles.css`, `index.html` |
+| Cliente enviou a panorâmica e a arara em resolução maior, sem texto; as duas substituem as capturas | `tools/optimize-images.py`, `index.html`, `assets/img` |
 
 ## Créditos e licenças
 

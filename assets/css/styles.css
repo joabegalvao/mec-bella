@@ -783,7 +783,7 @@ strong {
   }
 
   .duo__item:nth-child(2) .duo__figure img {
-    object-position: 50% 50%;
+    object-position: 50% 40%;
   }
 
   /* o segundo estilo desce um pouco, para o ritmo de revista */

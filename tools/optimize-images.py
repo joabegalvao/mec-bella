@@ -36,9 +36,10 @@ PHOTOS = {
     "blazer": ("Screenshot 2026-10-02 105840.png", (3, 3, 665, 894)),
     "cafe": ("Screenshot 2026-10-02 110055.png", (3, 3, 664, 889)),
     "copo": ("Screenshot 2026-10-02 110108.png", (3, 3, 665, 887)),
-    "loja": ("Screenshot 2026-10-02 122400.png", (3, 3, 1623, 870)),
-    # a arara veio com o texto do post na parte de baixo; fica só a parte de cima
-    "arara": ("Screenshot 2026-10-02 131604.png", (3, 3, 838, 560)),
+    # versões editadas pelo cliente (02/10/2026), em resolução maior e sem o
+    # texto do post; as capturas originais ficam guardadas, mas não são usadas
+    "loja": ("loja-editada.png", None),
+    "arara": ("arara-editada.png", None),
 }
 
 # Fotos de perfil: nome de saída -> arquivo em materiais-de-origem/avaliacoes
