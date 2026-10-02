@@ -98,7 +98,8 @@ aparecer na tela e ampliam devagar no hover.
 É um layout diferente dos outros projetos de moda desta série (Bacana e
 Modelle): hero com a frase da marca em corpo grande e a foto no espelho com a
 legenda vertical "Easy Chic Style / Basic & Casual"; seção dos dois estilos
-em duas colunas separadas por um fio, cada uma com número editorial;
+em duas colunas dentro do container, a segunda deslocada para baixo, cada
+uma com número editorial e a foto no tamanho em que foi publicada;
 panorâmica do interior em toda a largura; avaliações como citações de
 revista, com as fotos de perfil em preto e branco; mapa em preto e branco.
 Sem gradientes, sem efeitos de vidro, sem emojis como ícones.
@@ -109,7 +110,7 @@ Sem gradientes, sem efeitos de vidro, sem emojis como ícones.
 | --- | --- | --- | --- |
 | 1 | Cabeçalho | | Logo vetorizado, navegação em letras espaçadas e "Falar no WhatsApp". Fixo no topo |
 | 2 | Hero | `#inicio` | "Vista-se do que te inspira.", texto, WhatsApp, link para os estilos, nota 4,9 e a foto no espelho com a etiqueta vertical |
-| 3 | Os estilos | `#estilos` | Easy Chic Style (alfaiataria) e Basic & Casual (arara), lado a lado, cada um com link de WhatsApp próprio |
+| 3 | Os estilos | `#estilos` | Easy Chic Style (alfaiataria) e Basic & Casual (arara), lado a lado com até 460 px cada, cada um com link de WhatsApp próprio |
 | 4 | A loja | `#loja` | Panorâmica do interior, a frase da cliente como título, quatro itens (ambiente, café, atendimento, peças) e duas fotos do café |
 | 5 | Acessórios | `#acessorios` | Bolsas e cinto, texto, WhatsApp e o blazer com colar |
 | 6 | Avaliações | `#avaliacoes` | 4,9 com estrelas e três citações, a de Mariana em destaque |
@@ -147,8 +148,11 @@ materiais-de-origem/             arquivos do cliente (só na pasta local, fora d
 | `Screenshot ... 104843.png` | Bolsas pretas e cinto sobre a mesa | 662 x 889 | "Acessórios" |
 | `Screenshot ... 105840.png` | Blazer preto com colar de pérolas no manequim | 662 x 891 | "Acessórios" |
 
-**Nenhuma foto é ampliada**, e um teste automático confere isso. As capturas
-do Instagram tinham borda irregular de 2 a 3 px, deixada de fora.
+**Nenhuma foto é ampliada**, e um teste automático confere isso em 390 px;
+uma conferência extra foi feita em 1920 px, onde uma primeira versão da
+seção "Os estilos" esticava as duas fotos até metade da tela (o cliente
+notou a perda de nitidez). Agora elas têm no máximo 460 px. As capturas do
+Instagram tinham borda irregular de 2 a 3 px, deixada de fora.
 
 Observações:
 
@@ -292,6 +296,7 @@ verificado se o número responde no WhatsApp.
 | Ajuste | Arquivos |
 | --- | --- |
 | Versão inicial da página | todos |
+| Fotos de "Os estilos" limitadas a 460 px, dentro do container, para não ampliar | `styles.css`, `index.html` |
 
 ## Créditos e licenças
 
