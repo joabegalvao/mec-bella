@@ -1,0 +1,1371 @@
+/* ==========================================================================
+   Mec Bella
+   Direção: editorial de moda. Marfim, preto e muito espaço. Serifa de
+   display em corpo grande, grotesca leve no texto, linhas finas e fotos com
+   acabamento de revista (reveladas com um leve zoom ao entrar na tela).
+   Sumário
+   1. Fontes e tokens
+   2. Base
+   3. Utilitários e componentes (botões, link sublinhado, eyebrow)
+   4. Cabeçalho
+   5. Hero
+   6. Seções (estrutura comum)
+   7. Estilos (duo)
+   8. A loja
+   9. Acessórios
+   10. Avaliações
+   11. Onde fica
+   12. Chamada final
+   13. Rodapé
+   14. Botão de WhatsApp
+   15. Movimento
+   ========================================================================== */
+
+/* 1. Fontes e tokens
+   ========================================================================== */
+
+@font-face {
+  font-family: "Libre Caslon Display";
+  src: url("../fonts/libre-caslon-display-normal-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Karla";
+  src: url("../fonts/karla-normal-latin.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Karla";
+  src: url("../fonts/karla-italic-latin.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* Cores extraídas do logo: preto sobre branco */
+  --ink: #111111;
+  --white: #ffffff;
+
+  /* Neutros de apoio, tirados da loja: marfim das paredes, pedra do sofá, madeira clara */
+  --ivory: #f7f4ef;       /* fundo claro principal */
+  --ivory-deep: #efe9e0;  /* fundo claro alternado, faixas */
+  --stone: #b9ab9b;       /* linhas de destaque, legendas finas */
+  --stone-700: #776a5a;   /* texto secundário sobre o claro, rótulos */
+  --line: #ddd5c9;
+  --ink-soft: #4a4642;
+  --ink-line: #2c2a28;    /* linhas sobre o preto */
+  --mist: #bdb5aa;        /* texto secundário sobre o preto */
+  --whatsapp: #25d366;    /* verde oficial do WhatsApp */
+
+  --font-display: "Libre Caslon Display", "Didot", "Bodoni MT", Georgia, serif;
+  --font-body: "Karla", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --gutter: clamp(20px, 5vw, 56px);
+  --section-space: clamp(80px, 10vw, 160px);
+  --header-height: 76px;
+  --focus: var(--ink);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 980px) {
+  :root {
+    --header-height: 92px;
+  }
+}
+
+/* 2. Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-padding-top: calc(var(--header-height) + 16px);
+  background: var(--ink);
+}
+
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg,
+iframe {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+blockquote,
+dl,
+dd,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+address {
+  font-style: normal;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+strong {
+  font-weight: 600;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.closing :focus-visible,
+.footer :focus-visible,
+.header :focus-visible {
+  outline-color: var(--ivory);
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--ivory);
+}
+
+/* 3. Utilitários e componentes
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.icon {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 200;
+  padding: 12px 18px;
+  background: var(--ink);
+  color: var(--ivory);
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* Rótulo de seção: letras espaçadas, com um traço fino antes */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--stone-700);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  flex: none;
+  width: 40px;
+  height: 1px;
+  background: var(--stone);
+}
+
+.closing .eyebrow {
+  color: var(--mist);
+}
+
+@media (max-width: 479px) {
+  .eyebrow {
+    gap: 12px;
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+  }
+
+  .eyebrow::before {
+    width: 24px;
+  }
+}
+
+/* Botões retos, sem raio: o desenho do logo é reto */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 14px 32px;
+  border: 1px solid transparent;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.btn--small {
+  min-height: 46px;
+  padding: 8px 22px;
+  font-size: 0.75rem;
+}
+
+.btn--ink {
+  background: var(--ink);
+  color: var(--ivory);
+}
+
+.btn--ink:hover {
+  background: var(--ink-soft);
+}
+
+.btn--ivory {
+  background: var(--ivory);
+  color: var(--ink);
+}
+
+.btn--ivory:hover {
+  background: var(--white);
+}
+
+/* Link editorial: letras espaçadas e sublinhado fino que corre no hover */
+.link-line {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.link-line {
+  flex-wrap: wrap;
+}
+
+.link-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  height: 1px;
+  background: currentColor;
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.link-line:hover::after {
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.link-line .icon {
+  transition: transform 0.3s var(--ease);
+}
+
+.link-line:hover .icon {
+  transform: translateX(4px);
+}
+
+.link-line--light {
+  color: var(--ivory);
+}
+
+/* 4. Cabeçalho
+   ========================================================================== */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ivory);
+  border-bottom: 1px solid var(--line);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: var(--header-height);
+}
+
+.header__logo {
+  flex: none;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink);
+}
+
+.header__mark {
+  width: auto;
+  height: 26px;
+  aspect-ratio: 1090 / 370;
+}
+
+@media (min-width: 980px) {
+  .header__mark {
+    height: 32px;
+  }
+}
+
+.header__toggle {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  background: transparent;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.header__toggle-icon {
+  display: grid;
+  gap: 6px;
+  width: 20px;
+}
+
+.header__toggle-icon span {
+  display: block;
+  height: 1px;
+  background: currentColor;
+  transition: transform 0.25s var(--ease);
+}
+
+.header__toggle[aria-expanded="true"] .header__toggle-icon span:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+.header__toggle[aria-expanded="true"] .header__toggle-icon span:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px 40px;
+  padding-block: 12px;
+}
+
+.nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 32px;
+}
+
+.nav__list a {
+  display: inline-block;
+  padding-block: 10px;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s var(--ease);
+}
+
+.nav__list a:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 1059px) {
+  .js .header__toggle {
+    display: inline-flex;
+  }
+
+  .js .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    max-height: calc(100vh - var(--header-height));
+    max-height: calc(100dvh - var(--header-height));
+    overflow-y: auto;
+    padding: 12px var(--gutter) 28px;
+    background: var(--ivory);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .js .nav.is-open {
+    display: flex;
+  }
+
+  .js .nav__list {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .js .nav__list a {
+    display: flex;
+    align-items: center;
+    min-height: 54px;
+    padding-block: 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 0.9375rem;
+  }
+
+  .js .nav__cta {
+    width: 100%;
+    min-height: 56px;
+  }
+}
+
+/* 5. Hero
+   ========================================================================== */
+
+.hero {
+  padding-block: clamp(48px, 7vw, 112px) clamp(64px, 8vw, 128px);
+  background: var(--ivory);
+  overflow: hidden;
+}
+
+.hero__grid {
+  display: grid;
+  gap: 48px;
+}
+
+/* Duas linhas: "Vista-se do que" e "te inspira." O tamanho segue a coluna. */
+.hero__title {
+  margin-top: 28px;
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 1.4rem + 7.4vw, 6rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.hero__title em,
+.section__title em,
+.closing__title em {
+  display: block;
+  font-style: italic;
+  color: var(--stone-700);
+}
+
+.hero__lead {
+  max-width: 30em;
+  margin-top: 30px;
+  color: var(--ink-soft);
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  font-weight: 300;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 36px;
+  margin-top: 40px;
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 36px;
+  color: var(--stone-700);
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+}
+
+.rating strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.rating__stars,
+.score__stars {
+  display: inline-flex;
+  gap: 3px;
+  color: var(--ink);
+}
+
+.rating__stars .icon {
+  width: 13px;
+  height: 13px;
+}
+
+.hero__figure {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 460px);
+}
+
+.hero__figure img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: 50% 15%;
+}
+
+/* a legenda do hero vira uma etiqueta vertical ao lado da foto */
+.hero__tag {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+  color: var(--stone-700);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.hero__tag i {
+  width: 24px;
+  height: 1px;
+  background: var(--stone);
+}
+
+@media (max-width: 479px) {
+  .hero__actions .btn {
+    width: 100%;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero {
+    padding-top: clamp(32px, 5vw, 80px);
+  }
+
+  .hero__grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    align-items: center;
+    gap: clamp(48px, 7vw, 120px);
+  }
+
+  .hero__title {
+    font-size: clamp(3.25rem, 7.6vw - 10px, 6.25rem);
+  }
+
+  .hero__figure {
+    justify-self: end;
+    width: min(100%, 480px);
+    margin-right: 48px;
+  }
+
+  .hero__tag {
+    position: absolute;
+    top: 0;
+    right: -48px;
+    margin: 0;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .hero__tag i {
+    width: 1px;
+    height: 24px;
+  }
+}
+
+/* 6. Seções
+   ========================================================================== */
+
+.section {
+  padding-block: var(--section-space);
+}
+
+.section--ivory {
+  background: var(--ivory);
+}
+
+.section--white {
+  background: var(--white);
+}
+
+.section__intro {
+  display: grid;
+  gap: 8px;
+}
+
+.section__intro .section__lead {
+  margin-top: 16px;
+}
+
+.section__title {
+  margin-top: 24px;
+  font-family: var(--font-display);
+  font-size: clamp(2.125rem, 1.3rem + 3.4vw, 4rem);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.section__lead {
+  max-width: 34em;
+  margin-top: 24px;
+  color: var(--ink-soft);
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  font-weight: 300;
+}
+
+@media (min-width: 900px) {
+  .section__intro {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    align-items: end;
+    gap: clamp(40px, 6vw, 112px);
+  }
+
+  .section__intro .section__lead {
+    margin-top: 0;
+  }
+}
+
+/* 7. Estilos (duo)
+   ========================================================================== */
+
+.duo {
+  display: grid;
+  margin-top: clamp(48px, 6vw, 88px);
+  border-top: 1px solid var(--line);
+}
+
+.duo__item {
+  display: grid;
+  gap: 28px;
+  padding-block: 40px;
+  border-bottom: 1px solid var(--line);
+}
+
+.duo__figure {
+  overflow: hidden;
+}
+
+.duo__figure img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 30%;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.duo__item:hover .duo__figure img {
+  transform: scale(1.03);
+}
+
+.duo__body {
+  padding-inline: var(--gutter);
+}
+
+.duo__num {
+  display: block;
+  color: var(--stone-700);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+}
+
+.duo__title {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.duo__text {
+  max-width: 30em;
+  margin-top: 16px;
+  color: var(--ink-soft);
+  font-weight: 300;
+}
+
+.duo__body .link-line {
+  margin-top: 22px;
+}
+
+@media (min-width: 700px) {
+  .duo {
+    grid-template-columns: 1fr 1fr;
+    border-top: 0;
+  }
+
+  .duo__item {
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .duo__item + .duo__item {
+    border-left: 1px solid var(--line);
+  }
+
+  .duo__body {
+    padding: 0 clamp(28px, 4vw, 64px) 8px;
+  }
+
+  .duo__figure img {
+    aspect-ratio: 1;
+  }
+
+  .duo__item:nth-child(2) .duo__figure img {
+    object-position: 50% 50%;
+  }
+}
+
+/* 8. A loja
+   ========================================================================== */
+
+.store.section {
+  padding-top: 0;
+}
+
+.store__pano {
+  overflow: hidden;
+}
+
+.store__pano img {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  object-fit: cover;
+  object-position: 50% 55%;
+}
+
+.store__grid {
+  display: grid;
+  gap: 48px;
+  margin-top: var(--section-space);
+}
+
+.traits {
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+
+.trait {
+  display: grid;
+  gap: 6px;
+  padding-block: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.trait dt {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1.2;
+}
+
+.trait dd {
+  max-width: 30em;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.store__photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+  margin-top: clamp(56px, 7vw, 104px);
+}
+
+.store__photo {
+  overflow: hidden;
+}
+
+.store__photo img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.store__photo figcaption {
+  margin-top: 12px;
+  color: var(--stone-700);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+}
+
+.store__photo--offset {
+  margin-top: clamp(32px, 8vw, 120px);
+}
+
+@media (min-width: 700px) {
+  .store__photos {
+    grid-template-columns: 5fr 4fr;
+    gap: clamp(24px, 4vw, 64px);
+    padding-inline: clamp(0px, 6vw, 96px);
+  }
+}
+
+@media (min-width: 900px) {
+  .store__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(48px, 7vw, 120px);
+  }
+
+  .traits {
+    margin-top: 12px;
+  }
+}
+
+/* 9. Acessórios
+   ========================================================================== */
+
+.accessories__grid {
+  display: grid;
+  gap: 40px;
+}
+
+.accessories__photo {
+  overflow: hidden;
+}
+
+.accessories__photo img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.accessories__photo--second {
+  justify-self: end;
+  width: 70%;
+}
+
+.accessories__actions {
+  margin-top: 32px;
+}
+
+@media (max-width: 479px) {
+  .accessories__actions .btn {
+    width: 100%;
+  }
+}
+
+@media (min-width: 900px) {
+  .accessories__grid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr) minmax(0, 0.7fr);
+    align-items: center;
+    gap: clamp(40px, 5vw, 80px);
+  }
+
+  .accessories__photo--second {
+    width: 100%;
+    margin-top: 25%;
+  }
+}
+
+/* 10. Avaliações
+   ========================================================================== */
+
+.reviews__head {
+  max-width: 40rem;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.score__value {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 3rem + 4vw, 6.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.score__stars .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.reviews__head .section__title {
+  margin-top: 12px;
+}
+
+.reviews__grid {
+  display: grid;
+  gap: 0 clamp(32px, 5vw, 80px);
+  margin-top: clamp(48px, 6vw, 88px);
+  border-top: 1px solid var(--line);
+}
+
+.review {
+  padding-block: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.review blockquote p {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.review blockquote p::before {
+  content: "\201C";
+}
+
+.review blockquote p::after {
+  content: "\201D";
+}
+
+.review--lead blockquote p {
+  font-size: clamp(1.75rem, 1.3rem + 2vw, 3rem);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.review__author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 22px;
+  color: var(--stone-700);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.review__author img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  filter: grayscale(1);
+}
+
+@media (min-width: 700px) {
+  .reviews__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .review--lead {
+    grid-column: 1 / -1;
+    padding-block: 40px 48px;
+  }
+
+  .review--lead blockquote p {
+    max-width: 22em;
+  }
+}
+
+/* 11. Onde fica
+   ========================================================================== */
+
+.visit__grid {
+  display: grid;
+  gap: 48px;
+}
+
+.contacts {
+  margin-top: 36px;
+  border-top: 1px solid var(--line);
+}
+
+.contacts a {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 4px 16px;
+  min-height: 72px;
+  padding-block: 16px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  transition: color 0.2s var(--ease);
+}
+
+.contacts a:hover {
+  color: var(--stone-700);
+}
+
+.contacts .icon {
+  width: 20px;
+  height: 20px;
+  color: var(--stone-700);
+}
+
+.contacts__label {
+  color: var(--stone-700);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.contacts__value {
+  text-align: right;
+}
+
+.visit__hint {
+  margin-top: 20px;
+  color: var(--stone-700);
+  font-size: 0.875rem;
+}
+
+.map {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--ivory);
+}
+
+.map iframe {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  background: var(--ivory-deep);
+  filter: grayscale(1) contrast(1.05);
+}
+
+.map__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 0.2s var(--ease);
+}
+
+.map__link:hover {
+  background: var(--ivory);
+}
+
+@media (min-width: 900px) {
+  .visit__grid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: clamp(48px, 7vw, 112px);
+  }
+}
+
+/* 12. Chamada final
+   ========================================================================== */
+
+.closing {
+  padding-block: var(--section-space);
+  background: var(--ink);
+  color: var(--ivory);
+  text-align: center;
+}
+
+.closing__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.closing__mark {
+  width: min(60vw, 260px);
+  height: auto;
+  aspect-ratio: 1090 / 370;
+  color: var(--ivory);
+}
+
+.closing__title {
+  margin-top: 48px;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 1.4rem + 5vw, 5.5rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.closing__title em {
+  color: var(--mist);
+}
+
+.closing__text {
+  max-width: 30em;
+  margin-top: 28px;
+  color: var(--mist);
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  font-weight: 300;
+}
+
+.closing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 18px 36px;
+  margin-top: 40px;
+}
+
+@media (max-width: 479px) {
+  .closing__actions .btn {
+    width: 100%;
+  }
+}
+
+/* 13. Rodapé
+   ========================================================================== */
+
+.footer {
+  padding-top: 64px;
+  background: var(--ink);
+  border-top: 1px solid var(--ink-line);
+  color: var(--mist);
+  font-size: 0.9375rem;
+}
+
+.footer__grid {
+  display: grid;
+  gap: 40px;
+}
+
+.footer__mark {
+  width: 150px;
+  height: auto;
+  aspect-ratio: 1090 / 370;
+  color: var(--ivory);
+}
+
+.footer__brand p {
+  max-width: 24em;
+  margin-top: 20px;
+  font-weight: 300;
+}
+
+.footer__heading {
+  margin-bottom: 14px;
+  color: var(--ivory);
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  color: var(--ivory);
+  text-decoration: none;
+  transition: color 0.2s var(--ease);
+}
+
+.footer a:hover {
+  color: var(--mist);
+}
+
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: 48px;
+  /* a folga na base deixa o botão de WhatsApp livre do texto */
+  padding-block: 20px 88px;
+  border-top: 1px solid var(--ink-line);
+  font-size: 0.8125rem;
+}
+
+@media (min-width: 600px) {
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 900px) {
+  .footer__grid {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px;
+  }
+}
+
+/* 14. Botão de WhatsApp
+   ========================================================================== */
+
+.whats-float {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--whatsapp);
+  color: var(--ink);
+  box-shadow: 0 10px 26px rgba(17, 17, 17, 0.25);
+  transition: background-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.whats-float:hover {
+  background: #4be083;
+  transform: translateY(-2px);
+}
+
+.whats-float:focus-visible {
+  outline-color: var(--ink);
+  outline-offset: 3px;
+}
+
+.whats-float .icon {
+  width: 28px;
+  height: 28px;
+}
+
+@media (min-width: 900px) {
+  .whats-float {
+    right: 24px;
+    bottom: 24px;
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* 15. Movimento
+   ========================================================================== */
+
+.motion-ok [data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+}
+
+.motion-ok [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* as fotos entram com um leve zoom, como numa revista digital */
+.motion-ok figure[data-reveal] img {
+  transform: scale(1.06);
+  transition: transform 1.4s var(--ease-out);
+}
+
+.motion-ok figure[data-reveal].is-visible img {
+  transform: none;
+}
+
+.motion-ok .duo__item[data-reveal]:nth-child(2) {
+  transition-delay: 0.15s;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .whats-float:hover,
+  .duo__item:hover .duo__figure img {
+    transform: none;
+  }
+}
